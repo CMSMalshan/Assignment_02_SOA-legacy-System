@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WSDL Definitions -->
+<definitions name="HospitalService"
+             targetNamespace="http://example.com/hospital"
+             xmlns:tns="http://example.com/hospital"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <!-- Types / Data Structures -->
+    <types>
+        <xsd:schema targetNamespace="http://example.com/hospital">
+            
+            <!-- Patient Record Request/Response -->
+            <xsd:element name="GetPatientRecordRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="patient_id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetPatientRecordResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="patient_id" type="xsd:string"/>
+                        <xsd:element name="name" type="xsd:string"/>
+                        <xsd:element name="age" type="xsd:int"/>
+                        <xsd:element name="blood_group" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- Medical Report Request/Response -->
+            <xsd:element name="AddMedicalReportRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="patient_id" type="xsd:string"/>
+                        <xsd:element name="report_details" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="AddMedicalReportResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="success" type="xsd:boolean"/>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- Doctor Availability Request/Response -->
+            <xsd:element name="CheckDoctorAvailabilityRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="doctor_id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="CheckDoctorAvailabilityResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="doctor_name" type="xsd:string"/>
+                        <xsd:element name="is_available" type="xsd:boolean"/>
+                        <xsd:element name="available_time" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </types>
+
+    <!-- Messages -->
+    <message name="GetPatientRecordInput">
+        <part name="parameters" element="tns:GetPatientRecordRequest"/>
+    </message>
+    <message name="GetPatientRecordOutput">
+        <part name="parameters" element="tns:GetPatientRecordResponse"/>
+    </message>
+
+    <message name="AddMedicalReportInput">
+        <part name="parameters" element="tns:AddMedicalReportRequest"/>
+    </message>
+    <message name="AddMedicalReportOutput">
+        <part name="parameters" element="tns:AddMedicalReportResponse"/>
+    </message>
+
+    <message name="CheckDoctorAvailabilityInput">
+        <part name="parameters" element="tns:CheckDoctorAvailabilityRequest"/>
+    </message>
+    <message name="CheckDoctorAvailabilityOutput">
+        <part name="parameters" element="tns:CheckDoctorAvailabilityResponse"/>
+    </message>
+
+    <!-- Port Type (Operations available) -->
+    <portType name="HospitalPortType">
+        <operation name="GetPatientRecord">
+            <input message="tns:GetPatientRecordInput"/>
+            <output message="tns:GetPatientRecordOutput"/>
+        </operation>
+        <operation name="AddMedicalReport">
+            <input message="tns:AddMedicalReportInput"/>
+            <output message="tns:AddMedicalReportOutput"/>
+        </operation>
+        <operation name="CheckDoctorAvailability">
+            <input message="tns:CheckDoctorAvailabilityInput"/>
+            <output message="tns:CheckDoctorAvailabilityOutput"/>
+        </operation>
+    </portType>
+
+    <!-- Binding (How to connect - SOAP over HTTP) -->
+    <binding name="HospitalBinding" type="tns:HospitalPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+        <operation name="GetPatientRecord">
+            <soap:operation soapAction="http://example.com/hospital/GetPatientRecord"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        
+        <operation name="AddMedicalReport">
+            <soap:operation soapAction="http://example.com/hospital/AddMedicalReport"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        
+        <operation name="CheckDoctorAvailability">
+            <soap:operation soapAction="http://example.com/hospital/CheckDoctorAvailability"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+
+    <!-- Service (Where the service is hosted) -->
+    <service name="HospitalService">
+        <port name="HospitalPort" binding="tns:HospitalBinding">
+            <soap:address location="http://localhost:8000/wsdl"/>
+        </port>
+    </service>
+</definitions>
