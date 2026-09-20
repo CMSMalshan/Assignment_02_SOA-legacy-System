@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  grpc_backend:
+    build: ./grpc_server
+    ports:
+      - "50051:50051"
+    networks:
+      - hospital_net
+
+  soap_gateway:
+    build: ./soap_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - grpc_backend
+    networks:
+      - hospital_net
+
+networks:
+  hospital_net:
+    driver: bridge
