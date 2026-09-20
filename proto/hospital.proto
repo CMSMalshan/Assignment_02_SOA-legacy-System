@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package hospital;
+
+service HospitalService {
+  rpc GetPatientRecord (PatientRequest) returns (PatientResponse) {}
+  rpc AddMedicalReport (ReportRequest) returns (ReportResponse) {}
+  rpc CheckDoctorAvailability (DoctorRequest) returns (DoctorResponse) {}
+}
+
+message PatientRequest {
+  string patient_id = 1;
+}
+
+message PatientResponse {
+  string patient_id = 1;
+  string name = 2;
+  int32 age = 3;
+  string blood_group = 4;
+}
+
+message ReportRequest {
+  string patient_id = 1;
+  string report_details = 2;
+}
+
+message ReportResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message DoctorRequest {
+  string doctor_id = 1;
+}
+
+message DoctorResponse {
+  string doctor_name = 1;
+  bool is_available = 2;
+  string available_time = 3;
+}
